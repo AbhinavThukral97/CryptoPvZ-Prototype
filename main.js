@@ -1,102 +1,70 @@
-var stage = 1;
+var canShoot = true;
 
-function evolve() {
-  $(".light").css("background", "rgba(217, 194, 74, 0.8)");
-  $(".light").css("height", "250px");
-  $(".light").css("width", "250px");
-  setTimeout(() => {
-    $(".light").css("background", "rgba(217, 194, 74, 0.25)");
-    $(".light").css("height", "50px");
-    $(".light").css("width", "50px");
-  }, 2000);
-  setTimeout(() => {
-    if (stage == 0) {
-      $(".seed-inner").css("transform", "scale(1)");
-      $(".head-inner").css("transform", "scale(0)");
-      $(".spark").css("transform", "scale(0)");
-      $(".hair").css("transform", "scale(0)");
-      $(".eyes").css("transform", "scale(0)");
-      $(".body").css("transform", "scale(0)");
-      $(".leaves-front").css("transform", "scale(0)");
-      $(".leaves-back").css("transform", "scale(0)");
-      $(".glow").css("height", "200px");
-      $(".glow").css("width", "200px");
-    } else if (stage == 1) {
-      $(".seed-inner").css("transform", "scale(0)");
-      $(".head-inner").css("transform", "scale(0)");
-      $(".spark").css("transform", "scale(0)");
-      $(".hair").css("transform", "scale(0)");
-      $(".eyes").css("transform", "scale(0)");
-      $(".body").css("transform", "scale(0)");
-      $(".leaves-front").css("transform", "scale(1)");
-      $(".leaves-back").css("transform", "scale(1)");
-      $(".glow").css("height", "250px");
-      $(".glow").css("width", "250px");
-    } else if (stage == 2) {
-      $(".seed-inner").css("transform", "scale(0)");
-      $(".head-inner").css("transform", "scale(0)");
-      $(".spark").css("transform", "scale(0)");
-      $(".hair").css("transform", "scale(0)");
-      $(".eyes").css("transform", "scale(0)");
-      $(".body").css("transform", "scale(1)");
-      $(".leaves-front").css("transform", "scale(1)");
-      $(".leaves-back").css("transform", "scale(1)");
-      $(".glow").css("height", "300px");
-      $(".glow").css("width", "300px");
-    } else if (stage == 3) {
-      $(".seed-inner").css("transform", "scale(0)");
-      $(".head-inner").css("transform", "scale(1)");
-      $(".spark").css("transform", "scale(0)");
-      $(".hair").css("transform", "scale(0)");
-      $(".eyes").css("transform", "scale(0)");
-      $(".body").css("transform", "scale(1)");
-      $(".leaves-front").css("transform", "scale(1)");
-      $(".leaves-back").css("transform", "scale(1)");
-      $(".glow").css("height", "350px");
-      $(".glow").css("width", "350px");
-    } else if (stage == 4) {
-      $(".seed-inner").css("transform", "scale(0)");
-      $(".head-inner").css("transform", "scale(1)");
-      $(".spark").css("transform", "scale(0)");
-      $(".hair").css("transform", "scale(0)");
-      $(".eyes").css("transform", "scale(1)");
-      $(".body").css("transform", "scale(1)");
-      $(".leaves-front").css("transform", "scale(1)");
-      $(".leaves-back").css("transform", "scale(1)");
-      $(".glow").css("height", "400px");
-      $(".glow").css("width", "400px");
-    } else if (stage == 5) {
-      $(".seed-inner").css("transform", "scale(0)");
-      $(".head-inner").css("transform", "scale(1)");
-      $(".spark").css("transform", "scale(0)");
-      $(".hair").css("transform", "scale(1)");
-      $(".eyes").css("transform", "scale(1)");
-      $(".body").css("transform", "scale(1)");
-      $(".leaves-front").css("transform", "scale(1)");
-      $(".leaves-back").css("transform", "scale(1)");
-      $(".glow").css("height", "450px");
-      $(".glow").css("width", "450px");
-    } else if (stage == 6) {
-      $(".seed-inner").css("transform", "scale(0)");
-      $(".head-inner").css("transform", "scale(1)");
-      $(".spark").css("transform", "scale(1)");
-      $(".hair").css("transform", "scale(1)");
-      $(".eyes").css("transform", "scale(1)");
-      $(".body").css("transform", "scale(1)");
-      $(".leaves-front").css("transform", "scale(1)");
-      $(".leaves-back").css("transform", "scale(1)");
-      $(".glow").css("height", "450px");
-      $(".glow").css("width", "450px");
-      $(".button-wrapper button").css("transform", "scale(0)");
-    } else {
-      return;
-    }
-    stage++;
-  }, 1000);
+function shootBall() {
+  if (canShoot) {
+    canShoot = false;
+    $(".upper-body").css("animation", "none");
+    setTimeout(function () {
+      $(".upper-body").css("transform", "rotate(-10deg)");
+      $(".shooter-ball").css("transform", "scale(1)");
+    }, 50);
+    setTimeout(function () {
+      $(".upper-body").css("transform", "rotate(5deg)");
+      $(".shooter-ball img").animate({ left: "100vw" }, 1000);
+    }, 800);
+    setTimeout(function () {
+      $(".upper-body").css("transform", "rotate(-5deg)");
+      $(".upper-body").css("animation", "sway 3s infinite");
+      $(".shooter-ball").css("opacity", "0");
+    }, 1800);
+    setTimeout(function () {
+      $(".shooter-ball").css("transform", "scale(0)");
+      $(".shooter-ball img").css("left", "0%");
+    }, 2300);
+    setTimeout(function () {
+      $(".shooter-ball").css("opacity", "1");
+      canShoot = true;
+    }, 2800);
+  }
 }
 
 $(document).ready(function () {
-  $(".button-wrapper button").click(function () {
+  $(".tab.evolve").click(function () {
+    $(".tab").removeClass("current");
+    $(this).addClass("current");
+    evolve(0);
+    $(".button-wrapper button").css("transform", "scale(1)");
+    $(".button-wrapper button").html("Evolve");
+    $(".text-wrapper").css("opacity", "1");
+    $(".upper-body").css("animation", "none");
+    $(".shooter-ball").css("transform", "scale(0)");
+    buttonState = "evolve";
+  });
+  $(".tab.idle").click(function () {
+    $(".tab").removeClass("current");
+    $(this).addClass("current");
     evolve();
+    $(".shooter-ball").css("transform", "scale(0)");
+    $(".text-wrapper").css("opacity", "0");
+    $(".upper-body").css("animation", "sway 3s infinite");
+  });
+  $(".tab.shooter").click(function () {
+    $(".tab").removeClass("current");
+    $(".text-wrapper").css("opacity", "0");
+    $(this).addClass("current");
+    evolve();
+    setTimeout(function () {
+      buttonState = "shoot";
+      $(".button-wrapper button").css("transform", "scale(1)");
+      $(".shooter-ball").css("transform", "scale(0)");
+      $(".button-wrapper button").html("Shoot");
+      $(".upper-body").css("animation", "sway 3s infinite");
+    }, 2000);
+  });
+
+  $(window).keyup(function (e) {
+    if (e.keyCode == 32) {
+      shootBall();
+    }
   });
 });
