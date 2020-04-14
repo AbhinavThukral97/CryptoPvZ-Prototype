@@ -39,6 +39,10 @@ $mono: "Inconsolata", sans-serif;
 
 /*Body*/
 
+* {
+  -webkit-appearance: none;
+}
+
 body {
   margin: 0px;
 }
